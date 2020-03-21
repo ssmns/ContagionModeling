@@ -67,8 +67,6 @@ class Person:
             pass
 
         if (R < 1.0) and (self.stat == 1 or other.stat ==1):
-            print('must have a sick!')
-            print(self.stat,other.stat)
             if (other.stat != 2 or self.stat !=2 ) :
                 other.stat = 1
                 self.stat  = 1
@@ -105,16 +103,13 @@ class Person:
     
     def plot(self):
         if self.stat ==0 :
-            # plt.scatter(self.x,self.y, s=30, c='black', alpha=0.2)
+            plt.scatter(self.x,self.y, s=30, c='black', alpha=0.2)
             plt.scatter(self.x,self.y, s=2, c='black')
         elif self.stat ==1:
             plt.scatter(self.x,self.y, s=30, c='red', alpha=0.2)
             plt.scatter(self.x,self.y, s=2, c='red')
-            # plt.text(self.x,self.y,self.timesick)
-            # plt.plot(self.x,self.y,'ro',markersize=12,alpha)
-            # plt.plot(self.x,self.y,'ro')
         elif self.stat == 2:
-            # plt.scatter(self.x,self.y, s=30, c='green', alpha=0.2)
+            plt.scatter(self.x,self.y, s=30, c='green', alpha=0.2)
             plt.scatter(self.x,self.y, s=2, c='green')
 
         else:
@@ -132,7 +127,15 @@ class Person:
 
 
 
-            
+def saveXYZ(pop,file,option='a+'):
+    f = open(file,option)
+    f.write(str(len(pop))+'\n\n')
+    for i in range(len(pop)):
+        f.write(' %d  %f %f %f \n' % (pop[i].stat,pop[i].x,pop[i].y,0))
+        # print(pop[i].x)
+    f.close()
+     
+
 
 
         
@@ -157,8 +160,7 @@ for i in range(population):
     pop.append(Person(rd.uniform(0,200),rd.uniform(0,200),rd.uniform(0,359)))
     pop[i].box(0,0,200,200)
 
-
-
+saveXYZ(pop,'data.xyz')
 # sick population 
 for i in range(int(sick*population/100)):
     pop[plist[i]].stat=1
@@ -173,8 +175,7 @@ REl = np.zeros([Iteration])
 HEl = np.zeros([Iteration])
 Vert = np.arange(Iteration)
 
-# for j in range(Iteration):
-#     Vert[1,j]=j
+
 
 for j in range(Iteration):
     # plt.subplot(2,1,1)
@@ -191,34 +192,33 @@ for j in range(Iteration):
             RE+=1
         else:
             HE+=1
-        # 
-    plt.show(block=False)
-    plt.plot([0,0,200,200,0],[0,200,200,0,0],'k',linewidth=1)
-    plt.title(j*dt)
-    plt.axis('off')
-    plt.axis('equal')
+    
+
+    saveXYZ(pop,'data.xyz')
+    # plt.show(block=False)
+    # plt.plot([0,0,200,200,0],[0,200,200,0,0],'k',linewidth=1)
+    # plt.title(j*dt)
+    # plt.axis('off')
+    # plt.axis('equal')
     
     SEl[j] =SS
     REl[j] =RE
     HEl[j] = HE
 
-    # plt.bar(ind, golds, width=0.8, label='golds', color='gold', bottom=silvers+bronzes)
-    # plt.bar(ind, silvers, width=0.8, label='silvers', color='silver', bottom=bronzes)
-    # plt.bar(ind, bronzes, width=0.8, label='bronzes', color='#CD853F')
 
-    plt.subplot(2,2,1)
-    plt.bar(Vert,HEl, color='b', bottom =REl+SEl, width=1.8,label = 'Helth')
-    plt.bar(Vert,REl, color='g', bottom =SEl,width=1.8, label = 'Recover:'+str(RE))
-    plt.bar(Vert,SEl,color='r', width=1.8,label ='Sick:'+str(SS))
-    plt.legend()
 
+    # plt.subplot(2,1,2)
+    # plt.bar(Vert,HEl, color='b', bottom =REl+SEl, width=1.8,label = 'Helth')
+    # plt.bar(Vert,REl, color='g', bottom =SEl,width=1.8, label = 'Recover:'+str(RE))
+    # plt.bar(Vert,SEl,color='r', width=1.8,label ='Sick:'+str(SS))
+    # plt.legend()
     # plt.xticks(Ver, ('V1', 'V2', 'V3', 'V4', 'V5'))  
 
 
-    # print(SS,RE,HE)
-    plt.pause(0.01)
-    plt.clf()
-    # plt.close()
+
+    # plt.pause(0.01)
+    # plt.clf()
+
     if SS == 0:
         break
     for ii in range(population):
@@ -227,36 +227,5 @@ for j in range(Iteration):
             pop[ii].neighber(pop[jj])
 
     
-
-    
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-#     # plt.plot(pop.x,pop.y,'ro')
-#     plt.axis('off')
-#     plt.axis('equal')
-#     plt.xlim([-0.5,200.5])
-#     plt.ylim([-0.5,200.5])
-#     plt.plot([0,0,200,200,0],[0,200,200,0,0],'k',linewidth=1)
-#     plt.title(i)
-#     plt.pause(0.1)
-#     plt.clf()
-
-
-# plt.show()
-
-
-
 
 
