@@ -7,4 +7,4 @@ the code, programming with python 3 and the libraries used are:
 + numpy
 
 
-Run coronaviruse.py to make data.XYZ , then plotXYZ can animate exported data!
+Run `coronaviruse.py` to make `data.XYZ` , then `plotXYZ.py` can animate exported data!
