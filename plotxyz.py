@@ -47,7 +47,6 @@ def plotXYZ(file):
             plt.clf()
         # plt.show()
     except:
-        print('im here')
         pass
     
 
