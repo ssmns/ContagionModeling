@@ -1,3 +1,4 @@
+import matplotlib.pyplot as plt
 
 def updatePos(x,vx,dt):
     return vx*dt+x
@@ -8,10 +9,11 @@ class Person:
     def __init__(self, x , y , theta,stat = 0):  
         self.x = x 
         self.y = y
+        self.Types = ["black","green","red"]
+        
         if theta <0:
             theta = 360+theta
-        else:
-            pass
+
         self.thetad = theta
         theta = theta*np.pi/180
         self.vx = np.cos(theta)
@@ -51,27 +53,15 @@ class Person:
             if (self.vx * other.vx) <0:
                 self.vx = -self.vx
                 other.vx = -other.vx
-            else:
-                pass
 
             if (self.vy * other.vy)<0:
                 self.vy = -self.vy
                 other.vy = -other.vy
-            else:
-                pass
-
-        else:
-            pass
 
         if (R < 1.0) and (self.stat == 1 or other.stat ==1):
             if (other.stat != 2 or self.stat !=2 ) :
                 other.stat = 1
                 self.stat  = 1
-            else:
-                pass
-        else:
-            pass
-
 
 
     def newPosition(self,V,dt):
@@ -99,35 +89,65 @@ class Person:
 
     
     def plot(self):
-        if self.stat ==0 :
-            plt.scatter(self.x,self.y, s=30, c='black', alpha=0.2)
-            plt.scatter(self.x,self.y, s=2, c='black')
-        elif self.stat ==1:
-            plt.scatter(self.x,self.y, s=30, c='red', alpha=0.2)
-            plt.scatter(self.x,self.y, s=2, c='red')
-        elif self.stat == 2:
-            plt.scatter(self.x,self.y, s=30, c='green', alpha=0.2)
-            plt.scatter(self.x,self.y, s=2, c='green')
-
-        else:
-            pass
+        if self.stat>=0 and <3:
+            plt.scatter(self.x,self.y, s=30, c=self.Types[self.stat], alpha=0.2)
+            plt.scatter(self.x,self.y, s=2, c=self.Types[self.stat])
+            
     def updatestat(self):
         if self.stat==1:
             self.timesick+=self.dt
-        else:
-            pass
+            
         if self.timesick >= 14:
             self.stat =2
-        else:
+
+class XYZ:
+    def __init__(self,pop,file):
+        self.pop = pop
+        self.file = file
+        self.Types = ["black","green","red"]
+
+    def saveXYZ(self,option='a+'):
+        pop = self.pop
+        with open(self.file,option) as f:
+            f.write(str(len(pop))+'\n\n')
+            for i in range(len(pop)):
+                f.write(' %d  %f %f %f \n' % (pop[i].stat,pop[i].x,pop[i].y,0))
+                # print(pop[i].x)
+
+    def plotXYZ():
+        with open(self.file,'r') as f:
+            try:
+                while True:
+                    num = int(f.readline()) # number of points
+                    TPYl =[]
+                    Xl =[]
+                    Yl =[]
+                    Zl = []
+                    for i in range(num):
+                        reader = f.readline()
+                        if len(reader)<0:
+                            reader = f.readline()
+                        STR = [string for string in reader.split(' ') if len(string) ]
+                        TPYl.append(int(STR[0]))
+                        Xl.append(float(STR[1]))
+                        Yl.append(float(STR[2]))
+                        Zl.append(float(STR[3]))
+                        
+                    plt.show(block=False)
+                    for TPY,X,Y in zip(TPYl,Xl,Yl):
+                        plt.scatter(X,Y, s=30, c=self.Types[TPY], alpha=0.2)
+                        plt.scatter(X,Y, s=2, c=self.Types[TPY])
+                        
+                    plt.plot([0,0,200,200,0],[0,200,200,0,0],'k',linewidth=1)
+                    plt.axis('off')
+                    plt.axis('equal')
+                    plt.pause(0.001)
+                    plt.clf()
+                    # plt.show()
+        except:
             pass
+    
 
 
 
 
-def saveXYZ(pop,file,option='a+'):
-    f = open(file,option)
-    f.write(str(len(pop))+'\n\n')
-    for i in range(len(pop)):
-        f.write(' %d  %f %f %f \n' % (pop[i].stat,pop[i].x,pop[i].y,0))
-        # print(pop[i].x)
-    f.close()
