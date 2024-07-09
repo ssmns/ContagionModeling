@@ -2,6 +2,21 @@ import matplotlib.pyplot as plt
 import random as rd
 import numpy as np
 
+# Inputs
+export_file_path="data.xyz"
+population = 200
+sick = 4 # percent
+dt = 0.05 # time
+Speed = 30 
+Time = 50 # total time
+Iteration = int(Time/dt)
+
+plist = np.arange(population)
+rd.shuffle(plist)
+
+
+
+
 def updatePos(x,vx,dt):
     return vx*dt+x
 
@@ -134,24 +149,7 @@ def saveXYZ(pop,file,option='a+'):
         f.write(' %d  %f %f %f \n' % (pop[i].stat,pop[i].x,pop[i].y,0))
         # print(pop[i].x)
     f.close()
-     
-
-
-
         
-
-population = 200
-sick = 4 # percent
-dt = 0.05
-Speed = 30
-Time = 50
-Iteration = int(Time/dt)
-
-plist = np.arange(population)
-rd.shuffle(plist)
-# print(plist)
-
-
 
 
 # init
